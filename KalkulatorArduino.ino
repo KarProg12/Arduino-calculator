@@ -19,10 +19,13 @@ byte colPins[COLS] = { 9, 8, 7, 6 };  //connect to the column pinouts of the key
 Keypad keypad = Keypad(makeKeymap(keyBinds), rowPins, colPins, ROWS, COLS);
 //initialize lcd lcd
 LiquidCrystal_I2C lcd(0x27, 2, 16);
-
-float num1;
-String mathOperator = "";
-float num2;
+//numbers of equation in String variable
+String sNum1 = "";
+bool secondNumber = false; 
+String sNum2 = "";
+//variables where the String variables are converted to float 
+float num1 = 0;
+float num2 = 0;
 float equation = 0;
 
 
@@ -36,25 +39,11 @@ void loop() {
   char key = keypad.getKey();
 
   if (key) {
-    Serial.println(key);
-    lcd.print(key);
-    num1 += key;
-  }
-  if (key == '/' || key == '*' || key == '-' || key == '+') {
-    Serial.print(key);
-    lcd.print(key);
-    mathOperator += key;
-  }
-  if (key) {
-    Serial.println(key);
-    lcd.print(key);
-    num2 += key;
-  }
-  if (key == '=') {
-    num1
-  } 
-  if (key == 'C') {
-    Serial.println(key);
-    lcd.clear();
+        
+    if (key == 'C') {
+      Serial.println(key);
+      lcd.clear();
+    }
+    
   }
 }
