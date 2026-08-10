@@ -9,7 +9,7 @@ char keyBinds[ROWS][COLS] = {
   { '7', '8', '9', '/' },
   { '4', '5', '6', '*' },
   { '1', '2', '3', '-' },
-  { '0', '.', '=', '+' }
+  { 'C', '0', '=', '+' }
 };
 
 byte rowPins[ROWS] = { 5, 4, 3, 2 };  //connect to the row pinouts of the keypad
@@ -19,7 +19,11 @@ byte colPins[COLS] = { 9, 8, 7, 6 };  //connect to the column pinouts of the key
 Keypad keypad = Keypad(makeKeymap(keyBinds), rowPins, colPins, ROWS, COLS);
 //initialize lcd lcd
 LiquidCrystal_I2C lcd(0x27, 2, 16);
-String inputText = "";  //simple 'box' for the characters
+
+float num1;
+String mathOperator = "";
+float num2;
+float equation = 0;
 
 
 void setup() {
@@ -32,7 +36,25 @@ void loop() {
   char key = keypad.getKey();
 
   if (key) {
+    Serial.println(key);
+    lcd.print(key);
+    num1 += key;
+  }
+  if (key == '/' || key == '*' || key == '-' || key == '+') {
     Serial.print(key);
     lcd.print(key);
+    mathOperator += key;
+  }
+  if (key) {
+    Serial.println(key);
+    lcd.print(key);
+    num2 += key;
+  }
+  if (key == '=') {
+    num1
+  } 
+  if (key == 'C') {
+    Serial.println(key);
+    lcd.clear();
   }
 }
