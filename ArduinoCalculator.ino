@@ -37,9 +37,9 @@ void setup() {
 
 void loop() {
   char key = keypad.getKey();
-
+  //checks if any key on keypad has been clicked if not than tohing happens it just returns NO_KEY
   if (key) {
-        
+    lcd.print(key);    
     if (key == 'C') {
       Serial.println(key);
       lcd.clear();
