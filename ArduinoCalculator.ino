@@ -9,7 +9,7 @@ char keyBinds[ROWS][COLS] = {
   { '7', '8', '9', '/' },
   { '4', '5', '6', '*' },
   { '1', '2', '3', '-' },
-  { 'C', '0', '=', '+' }
+  { '.', '0', '=', '+' }
 };
 
 byte rowPins[ROWS] = { 5, 4, 3, 2 };  //connect to the row pinouts of the keypad
@@ -19,7 +19,7 @@ byte colPins[COLS] = { 9, 8, 7, 6 };  //connect to the column pinouts of the key
 Keypad keypad = Keypad(makeKeymap(keyBinds), rowPins, colPins, ROWS, COLS);
 
 //initialize lcd lcd
-LiquidCrystal_I2C lcd(0x27, 2, 16);
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 //numbers of equation in String variable
 String sNum1 = "";
@@ -47,14 +47,7 @@ void loop() {
   if (key) {
     Serial.println(key);
 
-    if (key == 'C') {
-      Serial.println(key);
-      lcd.clear();
-      sNum1 = "";
-      sNum2 = "";
-      mathOperator = "";
-      secondNum = false;
-    } else if (key == '/' || key == '*' || key == '-' || key == '+') {
+    if (key == '/' || key == '*' || key == '-' || key == '+') {
       lcd.print(key);
       mathOperator = String(key);
       secondNum = true;
@@ -80,24 +73,48 @@ void loop() {
           return;
         }
       }
-      //display equation of operation 
+      //clear display from operation before showing the equation
       lcd.clear();
-      lcd.print(equation);
-      //feedback loop: sNum1 is now the equation of previous operation
-      sNum1 = String(equation);
+      //display equation of operation
+      //check if num is integer(e.g if 17.00 is equal to 17?)
+      if (equation == (int)equation) {
+        lcd.print((int)equation);       //display on LCD only clear 17
+        sNum1 = String((int)equation);  //save in memory WITHOUT dot (e.g "17")
+      } else {
+        lcd.print(equation);       //display as a fraction (e.g 17.50)
+        sNum1 = String(equation);  //save in memory WITH dot (e.g "17.50")
+      }
+
       sNum2 = "";
       mathOperator = "";
       secondNum = false;
     }
     //collecting numbers to String
     else {
-      lcd.print(key);  //show number on screen
-
+      //if user is in phase of entering the first num of math operation
       if (secondNum == false) {
-        sNum1 += key;
-      } else {
-        sNum2 += key;
+        if (key == '.') {
+          if (sNum1.indexOf('.') == -1) {
+            sNum1 += key;
+            lcd.print(key);
+          }
+        } else {
+          sNum1 += key;
+          lcd.print(key);
+        }
       }
-    }
-  }
-}
+      //if user is in phase of entering the second num of math operation
+      else {
+        if (key == '.') {
+          if (sNum2.indexOf('.') == -1) {
+            sNum2 += key;
+            lcd.print(key);
+          }
+        } else {
+          sNum2 += key;
+          lcd.print(key);
+        }
+      }
+    }  //curly brace closing main block 'else' of collecting chars
+  }    //curly brace closing 'if (key == '.')'
+}  //curly brace closing func 'void loop()'
