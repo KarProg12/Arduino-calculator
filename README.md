@@ -7,3 +7,8 @@ Components:
 Graphic keymap:
 
 <img width="3468" height="4624" alt="46942" src="https://github.com/user-attachments/assets/d1cc115d-920e-4e54-8730-ef23c52758fe" />
+
+TODO:
+- [x] Working calculator
+- [] Calculator with ability to count floating-point numbers
+- [] Button to swich between screen backlight and no backlight

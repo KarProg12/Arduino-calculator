@@ -80,6 +80,7 @@ void loop() {
           return;
         }
       }
+      //display equation of operation 
       lcd.clear();
       lcd.print(equation);
       //feedback loop: sNum1 is now the equation of previous operation
