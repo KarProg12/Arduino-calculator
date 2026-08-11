@@ -10,5 +10,5 @@ Graphic keymap:
 
 TODO:
 - [x] Working calculator
-- [] Calculator with ability to count floating-point numbers
-- [] Button to swich between screen backlight and no backlight
+- [ ] Calculator with ability to count floating-point numbers
+- [ ] Button to swich between screen backlight and no backlight
