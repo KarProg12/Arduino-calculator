@@ -25,7 +25,7 @@ LiquidCrystal_I2C lcd(0x27, 2, 16);
 String sNum1 = "";
 String mathOperator = "";
 String sNum2 = "";
-bool secondNumber = false;
+bool secondNum = false;
 
 //variables where the String variables are converted to float
 float num1 = 0;
@@ -34,19 +34,69 @@ float equation = 0;
 
 
 void setup() {
+
   Serial.begin(9600);
   lcd.init();
   lcd.backlight();
 }
 
 void loop() {
+
   char key = keypad.getKey();
   //checks if any key on keypad has been clicked if not than nothing happens it just returns NO_KEY
   if (key) {
-    lcd.print(key);
+    Serial.println(key);
+
     if (key == 'C') {
       Serial.println(key);
       lcd.clear();
+      sNum1 = "";
+      sNum2 = "";
+      mathOperator = "";
+      secondNum = false;
+    } else if (key == '/' || key == '*' || key == '-' || key == '+') {
+      lcd.print(key);
+      mathOperator = String(key);
+      secondNum = true;
+    }
+    //converts String numbers to float
+    else if (key == '=') {
+      num1 = sNum1.toFloat();
+      num2 = sNum2.toFloat();
+
+      if (mathOperator == "*") equation = num1 * num2;
+      if (mathOperator == "-") equation = num1 - num2;
+      if (mathOperator == "+") equation = num1 + num2;
+      if (mathOperator == "/") {
+        if (num2 != 0) {
+          equation = num1 / num2;
+        } else {
+          lcd.clear();
+          lcd.print("Err:ZeroDivision");
+          sNum1 = "";
+          sNum2 = "";
+          mathOperator = "";
+          secondNum = false;
+          return;
+        }
+      }
+      lcd.clear();
+      lcd.print(equation);
+      //feedback loop: sNum1 is now the equation of previous operation
+      sNum1 = String(equation);
+      sNum2 = "";
+      mathOperator = "";
+      secondNum = false;
+    }
+    //collecting numbers to String
+    else {
+      lcd.print(key);  //show number on screen
+
+      if (secondNum == false) {
+        sNum1 += key;
+      } else {
+        sNum2 += key;
+      }
     }
   }
 }
