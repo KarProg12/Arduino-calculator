@@ -18,7 +18,7 @@ byte colPins[COLS] = { 9, 8, 7, 6 };  //connect to the column pinouts of the key
 //initialize an instance of class NewKeypad
 Keypad keypad = Keypad(makeKeymap(keyBinds), rowPins, colPins, ROWS, COLS);
 
-//initialize lcd lcd
+//initialize lcd 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 //numbers of equation in String variable
@@ -51,6 +51,8 @@ void loop() {
       lcd.print(key);
       mathOperator = String(key);
       secondNum = true;
+
+      lcd.setCursor(0, 1);  //second number in operation will be in row 1 on display
     }
     //converts String numbers to float
     else if (key == '=') {
@@ -70,6 +72,7 @@ void loop() {
           sNum2 = "";
           mathOperator = "";
           secondNum = false;
+          lcd.setCursor(0, 0);  //after a mistake cursor returns to row 0
           return;
         }
       }
@@ -81,8 +84,9 @@ void loop() {
         lcd.print((int)equation);       //display on LCD only clear 17
         sNum1 = String((int)equation);  //save in memory WITHOUT dot (e.g "17")
       } else {
-        lcd.print(equation);       //display as a fraction (e.g 17.50)
-        sNum1 = String(equation);  //save in memory WITH dot (e.g "17.50")
+        lcd.setCursor(0, 0);
+        lcd.print(equation, 4);       //display as a fraction with 4 places ofter dot (e.g 17.5000)
+        sNum1 = String(equation, 4);  //save in memory WITH dot (e.g "17.5000")
       }
 
       sNum2 = "";
