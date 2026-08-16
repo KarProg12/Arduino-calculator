@@ -3,6 +3,7 @@ Components:
 - Arduino board (Arduino UNO)
 - 4x4 button grid
 - lcd or oled I2C display
+- 1 (in future maybe more) single button 
 
 Graphic keymap:
 
