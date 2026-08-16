@@ -10,6 +10,7 @@
 - [x] Calculator with ability to count floating-point numbers
 - [x] Fix the problem when user clicks second dot in one number
 - [x] Add button to swich between screen backlight and no backlight
+- [ ] Replace the LCD with more "calculator style" screen 
 
 ## Graphic keymap:
 
