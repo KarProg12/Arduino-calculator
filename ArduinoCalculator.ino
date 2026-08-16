@@ -18,7 +18,7 @@ byte colPins[COLS] = { 9, 8, 7, 6 };  //connect to the column pinouts of the key
 //initialize an instance of class NewKeypad
 Keypad keypad = Keypad(makeKeymap(keyBinds), rowPins, colPins, ROWS, COLS);
 
-//initialize lcd 
+//initialize lcd
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 //numbers of equation in String variable
@@ -32,12 +32,18 @@ float num1 = 0;
 float num2 = 0;
 float equation = 0;
 
+bool backlit = true;
+bool lastButtonState = HIGH;
+#define backlitButton 11
+
 
 void setup() {
 
   Serial.begin(9600);
   lcd.init();
   lcd.backlight();
+
+  pinMode(backlitButton, INPUT_PULLUP);
 }
 
 void loop() {
@@ -121,4 +127,23 @@ void loop() {
       }
     }  //curly brace closing main block 'else' of collecting chars
   }    //curly brace closing 'if (key == '.')'
+  /*read state of the button (HIGH or LOW) because this button's using
+  INPUT_PULLUP these values are swapped LOW = HIGH, HIGH = LOW*/
+  bool buttonState = digitalRead(backlitButton);
+  
+  //if state of button = clicked and last button state was "not clicked"
+  if (buttonState == LOW && lastButtonState == HIGH) {
+    //backlit val true -> false
+    backlit = !backlit;
+    if (backlit == true) {
+      lcd.backlight();
+    } 
+    //when backlit == false
+    else {
+      lcd.noBacklight();
+    }
+    delay(100);
+  }
+  //save current button state as last button state
+  lastButtonState = buttonState;
 }  //curly brace closing func 'void loop()'

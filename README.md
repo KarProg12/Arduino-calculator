@@ -12,4 +12,4 @@ TODO:
 - [x] Working calculator
 - [x] Calculator with ability to count floating-point numbers
 - [x] Fix the problem when user clicks second dot in one number
-- [ ] Add button to swich between screen backlight and no backlight
+- [x] Add button to swich between screen backlight and no backlight
